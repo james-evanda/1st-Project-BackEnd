@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Invoice;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class InvoiceSeeder extends Seeder
 {
@@ -13,25 +14,17 @@ class InvoiceSeeder extends Seeder
      */
     public function run(): void
     {
-        
-            $user = User::first();
-    
-            if (!$user) {
-                $user = User::create([
-                    'name' => 'Test User',
-                    'email' => 'testuser@gmail.com',
-                    'password' => bcrypt('password123'),
-                    'role' => 'user',
-                    'phone' => '08123456789'
-                ]);
-            }
-    
+        $users = User::inRandomOrder()->limit(10)->get();
+
+        foreach ($users as $user) {
             Invoice::create([
-                'user_id' => $user->id,
-                'invoice_number' => 'INV-' . now()->timestamp,
-                'shipping_address' => 'Jl. Merdeka No. 12, Jakarta',
-                'postal_code' => '12345',
-                'total_price' => 2000000,
+                'invoice_number' => 'INV-' . strtoupper(Str::random(6)),
+                'customer_name' => $user->name ?? 'Unknown Customer',
+                'total_price' => rand(100000, 500000),
+                'status' => ['Pending', 'Paid'][rand(0, 1)],
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
+        }
     }
 }

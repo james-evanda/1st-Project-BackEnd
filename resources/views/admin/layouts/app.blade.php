@@ -4,66 +4,64 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Chipichapa') }}</title>
+    <title>{{ config('app.name', 'Product Inventory') }}</title>
 
-    <!-- Bootstrap 5 CSS -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Custom CSS -->
     <style>
         body {
             background-color: #f8f9fa;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Navbar -->
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">Chipichapa</a>
+            <a class="navbar-brand" href="{{ url('/admin') }}">{{ config('app.name', 'Product Inventory') }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}">Home</a>
-                    </li>
-
                     @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
-                        </li>
-
-                        @if(auth()->user()->role === 'admin')
-                            <!-- Admin: Manage Products -->
+                        @if (auth()->user()->role === 'admin')
+                            <!-- Dropdown Menu for Managing Products -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="manageProductsDropdown"
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Manage Products
                                 </a>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu" aria-labelledby="manageProductsDropdown">
                                     <li><a class="dropdown-item" href="{{ url('admin/products/create') }}">Create Product</a></li>
                                     <li><a class="dropdown-item" href="{{ url('admin/products') }}">View Products</a></li>
                                 </ul>
                             </li>
 
-                            <!-- Admin: Manage Invoices -->
+                            <!-- Dropdown Menu for Managing Invoices -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="manageInvoicesDropdown"
                                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Manage Invoices
                                 </a>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu" aria-labelledby="manageInvoicesDropdown">
+                                    <li><a class="dropdown-item" href="{{ url('admin/invoices/create') }}">Create Invoices</a></li>
                                     <li><a class="dropdown-item" href="{{ url('admin/invoices') }}">View Invoices</a></li>
                                 </ul>
                             </li>
                         @endif
-
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <a class="nav-link" href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 Logout ({{ auth()->user()->name }})
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -84,23 +82,11 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="container mt-4">
-        <div class="container text-center mt-5">
-            <h1 class="display-4">Welcome to Chipichapa</h1>
-            <p class="lead">Your ultimate platform for managing products and invoices.</p>
-        
-            <div class="mt-4">
-                @auth
-                    <a href="{{ route('dashboard') }}" class="btn btn-primary btn-lg">Go to Dashboard</a>
-                @else
-                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg">Login</a>
-                    <a href="{{ route('register') }}" class="btn btn-secondary btn-lg">Register</a>
-                @endauth
-            </div>
-        </div>
+    <div class="container">
+        @yield('content')
     </div>
 
-    <!-- Bootstrap 5 JavaScript -->
+    <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

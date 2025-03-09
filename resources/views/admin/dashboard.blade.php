@@ -1,39 +1,62 @@
-@extends('products.layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
-<div class="container">
-    <h2 class="my-4">Manage Products</h2>
-    <a href="{{ route('products.create') }}" class="btn btn-success mb-3">Add Product</a>
-    
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Image</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($products as $product)
-            <tr>
-                <td>{{ $product->name }}</td>
-                <td>Rp. {{ number_format($product->price, 0, ',', '.') }}</td>
-                <td>{{ $product->quantity }}</td>
-                <td><img src="{{ asset('storage/' . $product->photo) }}" width="100"></td>
-                <td>
-                    <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Edit</a>
-                    <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger" onclick="return confirm('Delete this product?')">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+    <div class="container">
+        <h1 class="mb-4">Admin Dashboard</h1>
+
+        <div class="row">
+            <!-- Total Products -->
+            <div class="col-md-3">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Products</h5>
+                        <p class="card-text display-4">{{ $totalProducts }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Users -->
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Users</h5>
+                        <p class="card-text display-4">{{ $totalUsers }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Categories -->
+            <div class="col-md-3">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Categories</h5>
+                        <p class="card-text display-4">{{ $totalCategories }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Invoices -->
+            <div class="col-md-3">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Invoices</h5>
+                        <p class="card-text display-4">{{ $totalInvoices }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Sales Revenue -->
+            <div class="col-md-3">
+                <div class="card text-white bg-dark mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Sales</h5>
+                        <p class="card-text display-4">Rp. {{ number_format($totalSales, 0, ',', '.') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="{{ route('admin.products.index') }}" class="btn btn-primary">Manage Products</a>
+        <a href="{{ route('admin.invoices.index') }}" class="btn btn-secondary">Manage Invoices</a>
+    </div>
 @endsection
-            

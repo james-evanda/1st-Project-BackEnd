@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('invoice_number')->unique(); 
-            $table->text('shipping_address'); 
-            $table->string('postal_code', 5); 
-            $table->decimal('total_price', 15, 2); 
+            $table->string('invoice_number')->unique();
+            $table->string('customer_name');
+            $table->integer('total_price');
+            $table->enum('status', ['Pending', 'Paid'])->default('Pending');
             $table->timestamps();
         });
     }
